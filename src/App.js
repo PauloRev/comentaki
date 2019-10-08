@@ -32,34 +32,78 @@ const useDatabasePush = endpoint => {
   return [status, save];
 };
 
-const Comments = ({ visible }) => {
-  const endpoint = visible ? "test" : "test/a";
-  const data = useDatabase(endpoint);
-  return <pre>{JSON.stringify(data)}</pre>;
+const Time = ({ timestamp }) => {
+  const date = new Date(timestamp);
+  const hours = date.getHours();
+  const minutes = "0" + date.getMinutes();
+  const seconds = "0" + date.getSeconds();
+
+  const day = "0" + (date.getDay() + 1);
+  const month = "0" + (date.getMonth() + 1);
+  const year = date.getFullYear();
+
+  return `${day.substring(-2)}/${month.substring(
+    -2
+  )}/${year} ${hours}:${minutes.substring(-2)}:${seconds.substring(-2)}`;
 };
 
-const A = () => {
-  const data = useDatabase("test/a");
-  return <pre>{JSON.stringify(data)}</pre>;
+const Comment = ({ comment }) => {
+  return (
+    <div>
+      <li>
+        {comment.content} <span>por: {comment.user.name}</span> em:{" "}
+        <Time timestamp={comment.createdAt} />
+      </li>
+    </div>
+  );
+};
+
+const Comments = () => {
+  const data = useDatabase("comments");
+  if (!data) {
+    return <p>Nenhum comentário enviado até o momento.</p>;
+  }
+  const ids = Object.keys(data);
+  if (ids.length === 0) {
+    return <p>Carregando comentários...</p>;
+  }
+  return ids.map(id => {
+    return <Comment key={id} comment={data[id]} />;
+  });
+};
+
+const NewComment = props => {
+  const [, save] = useDatabasePush("comments");
+  const [comment, setComment] = useState("");
+
+  const createComment = () => {
+    if (comment !== "") {
+      save({
+        content: comment,
+        createdAt: firebase.database.ServerValue.TIMESTAMP,
+        user: {
+          id: "1",
+          name: "Paulo"
+        }
+      });
+      setComment("");
+    }
+  };
+
+  return (
+    <div>
+      <textarea value={comment} onChange={e => setComment(e.target.value)} />
+      <button onClick={createComment}>Comentar</button>
+    </div>
+  );
 };
 
 function App() {
-  const [visible, toggle] = useState(true);
-  const [status, save] = useDatabasePush("test");
   return (
     <div>
       <h1>Comentaki</h1>
-      <button
-        onClick={() => {
-          // toggle(!visible);
-          save({ valor: 1, b: 2 });
-        }}
-      >
-        Toggle
-      </button>
-      Status: {status}
-      <Comments visible={visible} />
-      <A />
+      <NewComment />
+      <Comments />
     </div>
   );
 }
