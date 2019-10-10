@@ -6,7 +6,8 @@ import { AuthProvider } from "./auth";
 
 import NewComment from "./components/NewComment";
 import Comments from "./components/Comments";
-import CreateUser from './components/CreateUser'
+import CreateUser from './components/CreateUser';
+import UserInfo from './components/UserInfo';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <NewComment />
         <Comments />
         <CreateUser />
+        <UserInfo />
       </div>
     </AuthProvider>
   );
