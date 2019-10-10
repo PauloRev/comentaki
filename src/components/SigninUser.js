@@ -2,7 +2,7 @@ import React, {useContext, useState} from 'react'
 
 import {AuthContext} from '../auth'
 
-const CreateUser = () => {
+const SigninUser = () => {
   const auth = useContext(AuthContext)
 
   const [form, setForm] = useState({
@@ -19,7 +19,7 @@ const CreateUser = () => {
 
   const handleSubmit = e => {
     e.preventDefault()
-    auth.createUser.createUser(form.email, form.password)
+    auth.signinUser.signinUser(form.email, form.password)
   }
 
   if(auth.user !== null) {
@@ -28,14 +28,14 @@ const CreateUser = () => {
 
   return (
     <div>
-      <h1>Criar conta</h1>
-      <form onSubmit={handleSubmit}>
+      <h1>Fazer login</h1>
+      <form>
         <input type="email" value={form.email} onChange={handleForm('email')} placeholder="Seu e-mail" />
         <input type="password" value={form.password} onChange={handleForm('password')} placeholder="Sua senha" />
-        <button type="submit">Criar conta</button>
+        <button onClick={handleSubmit}>Entrar</button>
       </form>
     </div>
   )
 }
 
-export default CreateUser
+export default SigninUser

@@ -44,14 +44,49 @@ export const useCreateUser = () => {
   return [state, createUser]
 }
 
+export const useSigninUser = () => {
+  const [state, setState] = useState({
+    error: '',
+    success: ''
+  })
+  const signinUser = (email, password) => {
+    firebase
+    .auth()
+    .signInWithEmailAndPassword(email, password)
+    .catch(err => {
+      setState({
+        ...state,
+        error: err.message
+      })
+    })
+  }
+  return [state, signinUser]
+}
+
+const signout = () => {
+  firebase
+    .auth()
+    .signOut()
+    .then(() => {})
+}
+
 export const AuthProvider = ({ children }) => {
   const user = useGetUser()
   const [createUserState, createUser] = useCreateUser()
+  const [signinUserState, signinUser] = useSigninUser()
   return (
-    <AuthContext.Provider value={{ user, createUser: {
-      createUserState,
-      createUser
-    } }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      createUser: {
+        createUserState,
+        createUser,
+      },
+      signinUser: {
+        signinUserState,
+        signinUser
+      },
+      signout
+    }}>
       {children}
     </AuthContext.Provider>
   );
