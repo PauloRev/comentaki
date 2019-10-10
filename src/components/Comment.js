@@ -2,7 +2,7 @@ import React from "react";
 
 import Time from "./Time";
 
-import { Card, CardBody, CardTitle, CardText } from 'reactstrap';
+import { Card, CardBody, CardTitle, CardText } from "reactstrap";
 
 const Comment = ({ comment }) => {
   return (
@@ -10,7 +10,10 @@ const Comment = ({ comment }) => {
       <CardBody>
         <CardTitle>{comment.content}</CardTitle>
         <CardText>
-          <small className="text-muted">Por: {comment.user.name} / em: <Time timestamp={comment.createdAt} /></small>
+          <small className="text-muted">
+            Por: {comment.user.name} / em:{" "}
+            <Time timestamp={comment.createdAt} />
+          </small>
         </CardText>
       </CardBody>
       {/* <li>

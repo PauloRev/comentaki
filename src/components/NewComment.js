@@ -1,27 +1,27 @@
-import React, {useState, useContext} from 'react'
+import React, { useState, useContext } from "react";
 
-import { Button, Form, FormGroup, Input } from 'reactstrap';
+import { Button, Form, FormGroup, Input } from "reactstrap";
 
-import firebase from '../firebase'
-import { AuthContext } from '../auth'
+import firebase from "../firebase";
+import { AuthContext } from "../auth";
 
-import {useDatabasePush} from '../database'
+import { useDatabasePush } from "../database";
 
 const NewComment = () => {
   const [, save] = useDatabasePush("comments");
   const [comment, setComment] = useState("");
-  const auth = useContext(AuthContext)
-  
-  if(auth.user === null) {
-    return null
+  const auth = useContext(AuthContext);
+
+  if (auth.user === null) {
+    return null;
   }
 
-  const {displayName} = auth.user
-  const [alternativeDisplayName] = auth.user.email.split('@')
+  const { displayName } = auth.user;
+  const [alternativeDisplayName] = auth.user.email.split("@");
 
   const createComment = () => {
-    if(!comment || comment.length < 2) {
-      return null
+    if (!comment || comment.length < 2) {
+      return null;
     }
     if (comment !== "") {
       save({
@@ -38,12 +38,19 @@ const NewComment = () => {
 
   return (
     <div className="container">
-      <Form>
-        <FormGroup row className="mt-4 mb-2">
-          <Input type="textarea" value={comment} onChange={e => setComment(e.target.value)} placeholder="Faça um comentário..."/>
+      <Form className="m-4">
+        <FormGroup row>
+          <Input
+            type="textarea"
+            value={comment}
+            onChange={e => setComment(e.target.value)}
+            placeholder="Faça um comentário..."
+          />
         </FormGroup>
         <FormGroup row>
-          <Button color="primary" onClick={createComment}>Comentar</Button>
+          <Button color="primary" onClick={createComment}>
+            Comentar
+          </Button>
         </FormGroup>
         {/* <textarea value={comment} onChange={e => setComment(e.target.value)} />
         <button onClick={createComment}>Comentar</button> */}
