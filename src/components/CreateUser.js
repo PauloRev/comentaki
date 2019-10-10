@@ -1,14 +1,31 @@
 import React, {useContext, useState} from 'react'
 
+import {
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Form,
+  FormGroup,
+  Input
+} from 'reactstrap';
+
 import {AuthContext} from '../auth'
 
 const CreateUser = () => {
   const auth = useContext(AuthContext)
 
+  const [openModal, setOpenModal] = useState(false)
+
   const [form, setForm] = useState({
     email: '',
     password: ''
   })
+
+  const toggleModal = () => {
+    setOpenModal(!openModal)
+  }
 
   const handleForm = input => e => {
     setForm({
@@ -27,14 +44,34 @@ const CreateUser = () => {
   }
 
   return (
-    <div>
-      <h1>Criar conta</h1>
-      <form onSubmit={handleSubmit}>
-        <input type="email" value={form.email} onChange={handleForm('email')} placeholder="Seu e-mail" />
-        <input type="password" value={form.password} onChange={handleForm('password')} placeholder="Sua senha" />
-        <button type="submit">Criar conta</button>
-      </form>
-    </div>
+    <>
+      <Button color="danger" onClick={toggleModal}>Cadastrar-se</Button>
+      <Modal isOpen={openModal} toggle={toggleModal} >
+        <ModalHeader toggle={toggleModal}>Criar conta</ModalHeader>
+        <ModalBody>
+          <Form className="p-2">
+            <FormGroup row>
+              <Input type="email" value={form.email} onChange={handleForm('email')} placeholder="Seu e-mail" />
+            </FormGroup>
+            <FormGroup row>
+              <Input type="password" value={form.password} onChange={handleForm('password')} placeholder="Sua senha" />
+            </FormGroup>
+          </Form>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={handleSubmit}>Cadastrar-se</Button>{' '}
+          <Button color="secondary" onClick={toggleModal}>Cancelar</Button>
+        </ModalFooter>
+      </Modal>      
+    </>
+    // <div>
+    //   <h1>Criar conta</h1>
+    //   <form onSubmit={handleSubmit}>
+    //     <input type="email" value={form.email} onChange={handleForm('email')} placeholder="Seu e-mail" />
+    //     <input type="password" value={form.password} onChange={handleForm('password')} placeholder="Sua senha" />
+    //     <button type="submit">Criar conta</button>
+    //   </form>
+    // </div>
   )
 }
 

@@ -37,9 +37,7 @@ const UserInfo = () => {
 
   return (
     <>
-      <p>Olá, {dn}!</p>
       <FormDisplayName displayName={dn} user={auth.user} />
-      <button onClick={auth.signout}>Sair</button>
     </>
   )
 }
